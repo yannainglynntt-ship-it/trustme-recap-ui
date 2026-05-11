@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustMe PRO - Admin Control Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem; }
+        .stat-box { background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(14, 165, 233, 0.2); }
+        .btn-neon { background: linear-gradient(135deg, #0ea5e9, #8b5cf6); transition: all 0.3s; }
+        .btn-neon:hover { box-shadow: 0 0 15px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
+        table th { background-color: rgba(0,0,0,0.3); text-transform: uppercase; font-size: 0.75rem; color: #94a3b8; }
+        table td { font-size: 0.875rem; border-top: 1px solid rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body class="p-6 md:p-10 min-h-screen hidden" id="adminBody">
+    <div class="max-w-6xl mx-auto space-y-8">
+        
+        <div class="flex justify-between items-center border-b border-slate-700 pb-6">
+            <div>
+                <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 tracking-tight">TrustMe Admin Panel</h1>
+                <p class="text-slate-400 text-sm mt-1">Fully Control your Users and Codes</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="logoutAdmin()" class="bg-red-900/40 hover:bg-red-900/60 text-red-400 px-4 py-2 rounded-lg text-sm font-bold border border-red-500/30 transition">Log Out</button>
+                <button onclick="loadStats()" class="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg text-sm font-bold border border-slate-600 transition flex items-center gap-2">
+                    <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card stat-box p-6 flex justify-between items-center">
+                <div>
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">7-Days Users</p>
+                    <h2 class="text-3xl font-black text-white" id="s-7t">0</h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-emerald-400 text-xs font-bold uppercase mb-1">Active</p>
+                    <h2 class="text-xl font-bold text-emerald-300" id="s-7a">0</h2>
+                </div>
+            </div>
+            <div class="glass-card stat-box p-6 flex justify-between items-center">
+                <div>
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">30-Days Users</p>
+                    <h2 class="text-3xl font-black text-white" id="s-30t">0</h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-emerald-400 text-xs font-bold uppercase mb-1">Active</p>
+                    <h2 class="text-xl font-bold text-emerald-300" id="s-30a">0</h2>
+                </div>
+            </div>
+            <div class="glass-card stat-box p-6 flex justify-between items-center border-purple-500/30 bg-purple-500/5">
+                <div>
+                    <p class="text-purple-400 text-xs font-bold uppercase mb-1">All Members</p>
+                    <h2 class="text-3xl font-black text-white" id="s-allt">0</h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-emerald-400 text-xs font-bold uppercase mb-1">Total Active</p>
+                    <h2 class="text-xl font-bold text-emerald-300" id="s-alla">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card p-6 md:col-span-1">
+                <h3 class="font-bold text-cyan-400 mb-4 border-b border-slate-700 pb-2">➕ Generate New Code</h3>
+                <div class="space-y-3">
+                    <button onclick="generateCode(7)" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold rounded-lg border border-cyan-500/30 transition">7-Days (280 pts)</button>
+                    <button onclick="generateCode(30)" class="w-full py-3 btn-neon text-white font-bold rounded-lg border border-purple-500/50">1 Month (1000 pts)</button>
+                </div>
+                <div id="newCodeBox" class="mt-4 p-4 bg-slate-900 border border-slate-700 rounded-lg text-center hidden">
+                    <p class="text-xs text-slate-400 mb-1">Code Successfully Created</p>
+                    <p id="newCodeTxt" class="text-xl font-black text-white tracking-widest"></p>
+                </div>
+            </div>
+
+            <div class="glass-card p-6 md:col-span-2 overflow-hidden flex flex-col h-[500px]">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-purple-400">👥 Live Users Management</h3>
+                    <input type="text" id="searchInput" placeholder="Search by Code..." onkeyup="filterTable()" class="bg-slate-900 border border-slate-700 text-white text-sm rounded-lg px-3 py-1.5 focus:border-cyan-500 outline-none w-48">
+                </div>
+                
+                <div class="overflow-y-auto flex-grow pr-2">
+                    <table class="w-full text-left" id="usersTable">
+                        <thead class="sticky top-0 z-10">
+                            <tr>
+                                <th class="p-3 rounded-tl-lg">Login Code</th>
+                                <th class="p-3">Plan</th>
+                                <th class="p-3 text-center">Pts Left</th>
+                                <th class="p-3 text-center">Status</th>
+                                <th class="p-3 text-right rounded-tr-lg">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr><td colspan="5" class="p-4 text-center text-slate-500">Loading data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🚨 အရေးကြီး: Cloudflare Worker ၏ URL အပြည့်အစုံကို ဤနေရာတွင် ထည့်ပါ 🚨
+        const API_BASE_URL = "https://your-worker-name.your-subdomain.workers.dev"; // 👈 ပြောင်းရန်
+        
+        let pass = sessionStorage.getItem('trustme_admin_pass');
+        
+        if (!pass) {
+            pass = prompt("🔑 Admin Password ရိုက်ထည့်ပါ:");
+            if (pass) {
+                sessionStorage.setItem('trustme_admin_pass', pass);
+            } else {
+                document.body.innerHTML = "<h2 style='color:white; text-align:center; margin-top:20%;'>Access Denied! Reload page to try again.</h2>";
+            }
+        }
+
+        if (pass) {
+            document.getElementById('adminBody').classList.remove('hidden');
+            loadStats();
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('trustme_admin_pass');
+            location.reload();
+        }
+
+        async function loadStats() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/admin/stats`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pass })
+                });
+                
+                if (res.status === 401) {
+                    alert("Admin Password မှားယွင်းနေပါသည်။");
+                    logoutAdmin();
+                    return;
+                }
+
+                const data = await res.json();
+                
+                document.getElementById('s-7t').innerText = data.stats.total7;
+                document.getElementById('s-7a').innerText = data.stats.active7;
+                document.getElementById('s-30t').innerText = data.stats.total30;
+                document.getElementById('s-30a').innerText = data.stats.active30;
+                document.getElementById('s-allt').innerText = data.stats.totalAll;
+                document.getElementById('s-alla').innerText = data.stats.activeAll;
+
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = '';
+                
+                if (data.users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No users found.</td></tr>';
+                    return;
+                }
+
+                data.users.forEach(u => {
+                    let statusBadge = '<span class="bg-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold">Unused</span>';
+                    if (u.isBanned) statusBadge = '<span class="bg-red-900/50 text-red-400 border border-red-500/50 px-2 py-1 rounded text-[10px] font-bold">Banned</span>';
+                    else if (u.isExpired) statusBadge = '<span class="bg-yellow-900/50 text-yellow-400 border border-yellow-500/50 px-2 py-1 rounded text-[10px] font-bold">Expired</span>';
+                    else if (u.usedBy !== 'Not Used') statusBadge = '<span class="bg-emerald-900/50 text-emerald-400 border border-emerald-500/50 px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1 w-max mx-auto"><div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div> Active</span>';
+
+                    let daysLeft = '-';
+                    if (u.expireAt && !u.isExpired && !u.isBanned) {
+                        daysLeft = Math.ceil((u.expireAt - Date.now()) / (1000 * 60 * 60 * 24)) + 'd';
+                    }
+
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-slate-800/50 transition';
+                    row.innerHTML = `
+                        <td class="p-3 font-mono text-cyan-300">${u.code}</td>
+                        <td class="p-3 text-xs text-slate-300">${u.duration} Days</td>
+                        <td class="p-3 text-center text-xs font-bold ${u.credits < 50 ? 'text-red-400' : 'text-purple-300'}">${u.credits}</td>
+                        <td class="p-3 text-center">${statusBadge} <div class="text-[9px] text-slate-500 mt-1">${daysLeft}</div></td>
+                        <td class="p-3 text-right space-x-1">
+                            <button onclick="action('${u.code}', 'add_points')" class="bg-purple-900/50 hover:bg-purple-600 text-purple-300 px-2 py-1.5 rounded text-[10px] font-bold transition" title="Add 100 Points">+Pts</button>
+                            <button onclick="action('${u.code}', 'reset_device')" class="bg-blue-900/50 hover:bg-blue-600 text-blue-300 px-2 py-1.5 rounded text-[10px] font-bold transition" title="Reset Phone Login">Reset</button>
+                            ${!u.isBanned ? `<button onclick="action('${u.code}', 'ban')" class="bg-red-900/50 hover:bg-red-600 text-red-300 px-2 py-1.5 rounded text-[10px] font-bold transition" title="Ban User">Ban</button>` : ''}
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+            } catch (e) { alert("Failed to load data!"); }
+        }
+
+        async function generateCode(days) {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/admin/generate`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pass, duration: days })
+                });
+                const data = await res.json();
+                if (data.code) {
+                    document.getElementById('newCodeTxt').innerText = data.code;
+                    document.getElementById('newCodeBox').classList.remove('hidden');
+                    loadStats(); 
+                } else alert(data.error);
+            } catch (err) { alert("Connection Error!"); }
+        }
+
+        async function action(code, act) {
+            if(act === 'ban' && !confirm("Are you sure you want to ban code: " + code + "?")) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/admin/action`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pass, code: code, action: act })
+                });
+                if(res.ok) loadStats(); 
+                else alert("Action failed!");
+            } catch(e) { alert("Connection Error!"); }
+        }
+
+        function filterTable() {
+            const input = document.getElementById("searchInput").value.toUpperCase();
+            const trs = document.getElementById("usersTable").getElementsByTagName("tr");
+            for (let i = 1; i < trs.length; i++) {
+                const td = trs[i].getElementsByTagName("td")[0];
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    trs[i].style.display = txtValue.toUpperCase().indexOf(input) > -1 ? "" : "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
