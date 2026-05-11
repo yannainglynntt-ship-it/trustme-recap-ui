@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUSTME RECAP AI PRO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --neon-cyan: #0ea5e9;
+            --neon-purple: #8b5cf6;
+            --glass-bg: rgba(17, 24, 39, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #050505; 
+            color: #f3f4f6;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.10) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(139, 92, 246, 0.10) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        
+        .glass-panel { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(20px) saturate(150%); 
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid var(--glass-border); 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8); 
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+            outline: none;
+        }
+
+        .text-gold {
+            color: #fbbf24;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+        }
+        
+        .text-green-accent { color: #34d399; }
+        .text-red-title { color: #ef4444; }
+        .text-blue-content { color: #60a5fa; }
+
+        .neon-btn-primary {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .neon-btn-primary:hover:not(:disabled) {
+            box-shadow: 0 6px 30px rgba(139, 92, 246, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .neon-btn-primary:disabled {
+            background: #374151;
+            box-shadow: none;
+            border-color: transparent;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .ratio-btn { 
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+            transition: all 0.3s ease;
+        }
+        
+        .ratio-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.08); }
+        
+        .ratio-btn.active { 
+            background: rgba(14, 165, 233, 0.2); 
+            border-color: var(--neon-cyan);
+            color: #38bdf8; 
+            box-shadow: inset 0 0 15px rgba(14, 165, 233, 0.3), 0 0 10px rgba(14, 165, 233, 0.2);
+        }
+
+        .custom-file-input::-webkit-file-upload-button { visibility: hidden; display: none; }
+        
+        .custom-file-input::before { 
+            content: 'ဗီဒီယိုဖိုင် ရွေးချယ်ပါ (Upload Video)'; 
+            display: inline-block; 
+            background: rgba(255, 255, 255, 0.05); 
+            color: #a78bfa; 
+            border-radius: 12px; 
+            padding: 12px 20px; 
+            outline: none; 
+            white-space: nowrap; 
+            cursor: pointer; 
+            font-weight: 600; 
+            width: 100%; 
+            text-align: center; 
+            border: 1px dashed rgba(139, 92, 246, 0.5); 
+            transition: all 0.3s;
+        }
+        
+        .custom-file-input:hover::before { 
+            background: rgba(139, 92, 246, 0.1); 
+            border-color: var(--neon-purple); 
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); 
+        }
+        
+        .bgm-file-input::-webkit-file-upload-button { display: none; }
+        .bgm-file-input::before { 
+            content: '🎵 BGM ရွေးချယ်ပါ (Optional)'; 
+            display: inline-block; 
+            background: rgba(255, 255, 255, 0.05); 
+            color: #38bdf8; 
+            border-radius: 12px; 
+            padding: 12px 20px; 
+            outline: none; 
+            white-space: nowrap; 
+            cursor: pointer; 
+            font-weight: 600; 
+            width: 100%; 
+            text-align: center; 
+            border: 1px dashed rgba(14, 165, 233, 0.5); 
+            transition: all 0.3s; 
+        }
+        
+        .bgm-file-input:hover::before { 
+            background: rgba(14, 165, 233, 0.1); 
+            border-color: var(--neon-cyan); 
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3); 
+        }
+
+        .logo-file-input::-webkit-file-upload-button { display: none; }
+        .logo-file-input::before { 
+            content: '🖼️ Channel Logo ရွေးရန်'; 
+            display: inline-block; 
+            background: rgba(255, 255, 255, 0.05); 
+            color: #10b981; 
+            border-radius: 12px; 
+            padding: 12px 20px; 
+            outline: none; 
+            white-space: nowrap; 
+            cursor: pointer; 
+            font-weight: 600; 
+            width: 100%; 
+            text-align: center; 
+            border: 1px dashed rgba(16, 185, 129, 0.5); 
+            transition: all 0.3s; 
+        }
+        
+        .logo-file-input:hover::before { 
+            background: rgba(16, 185, 129, 0.1); 
+            border-color: #34d399; 
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); 
+        }
+
+        .step-card { 
+            background: rgba(0, 0, 0, 0.3); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            transition: all 0.3s ease; 
+        }
+        
+        .step-active { 
+            border-color: var(--neon-cyan); 
+            background: rgba(14, 165, 233, 0.15); 
+            color: #38bdf8; 
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.2); 
+        }
+        
+        .step-completed { 
+            border-color: #10b981; 
+            background: rgba(16, 185, 129, 0.15); 
+            color: #34d399; 
+        }
+        
+        .step-pending { color: #6b7280; }
+
+        .toggle-checkbox:checked { right: 0; border-color: #10b981; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #10b981; }
+        .toggle-checkbox { right: 0; z-index: 1; border-color: #4b5563; transition: all 0.3s; }
+        .toggle-label { width: 2.5rem; height: 1.25rem; background-color: #374151; border-radius: 9999px; transition: all 0.3s; cursor: pointer; }
+
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; 
+            height: 16px; width: 16px; 
+            border-radius: 50%; 
+            background: var(--neon-cyan); 
+            cursor: pointer; 
+            margin-top: -6px; 
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.6); 
+        }
+        input[type=range]::-webkit-slider-runnable-track { 
+            width: 100%; height: 4px; 
+            cursor: pointer; 
+            background: rgba(255,255,255,0.2); 
+            border-radius: 2px; 
+        }
+
+        @keyframes flow { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+        .animated-bar { background-image: linear-gradient(90deg, var(--neon-cyan) 0%, var(--neon-purple) 50%, var(--neon-cyan) 100%); background-size: 200% auto; animation: flow 2s linear infinite; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); filter: blur(5px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        
+        select option { background: #1f2937; color: white; font-weight: bold; }
+    </style>
+</head>
+<body class="flex justify-center py-10 px-4">
+
+    <div id="loginScreen" class="w-full max-w-md glass-panel rounded-3xl p-8 fade-in flex flex-col justify-center text-center my-auto relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500 rounded-full mix-blend-screen filter blur-[80px] opacity-20"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500 rounded-full mix-blend-screen filter blur-[80px] opacity-20"></div>
+
+        <div class="relative z-10 mb-8">
+            <img src="https://i.postimg.cc/xqr3BnQh/Messenger-creation-48210E58-0DBC-45DF-B59E-A4641238DDE0.jpg" alt="TrustMe AI Logo" class="w-24 h-24 mx-auto mb-5 rounded-3xl shadow-[0_0_20px_rgba(14,165,233,0.5)] object-cover border border-cyan-500/30">
+            <h1 class="text-3xl font-black text-gold tracking-tight">TRUSTME RECAP AI PRO</h1>
+            <p class="text-sm text-green-accent mt-2 font-medium tracking-wide">Premium Glassmorphism Edition</p>
+        </div>
+        
+        <div class="relative z-10 space-y-5">
+            <div class="text-xs text-blue-content font-medium text-left px-2 leading-relaxed">
+                စနစ်အတွင်းသို့ ဝင်ရောက်အသုံးပြုရန် သင့်အား ပေးထားသော <b>Login Code</b> ကို အောက်တွင် ထည့်သွင်းပေးပါ။
+            </div>
+            <input type="text" id="accessCode" placeholder="Enter your Login Code" class="glass-input w-full rounded-2xl p-4 text-center font-bold text-lg tracking-widest uppercase">
+            <p id="loginError" class="text-red-400 text-xs font-bold hidden bg-red-900/30 p-2 rounded-lg border border-red-500/30"></p>
+            <button id="loginBtn" class="neon-btn-primary w-full py-4 font-bold rounded-2xl text-lg tracking-wide uppercase">စနစ်အတွင်းသို့ ဝင်မည်</button>
+        </div>
+    </div>
+
+    <div id="appScreen" class="w-full max-w-4xl glass-panel rounded-3xl p-8 hidden fade-in relative overflow-hidden">
+        <div class="absolute -top-10 -left-10 w-48 h-48 bg-purple-600 rounded-full mix-blend-screen filter blur-[100px] opacity-10 pointer-events-none"></div>
+        <div class="absolute top-1/2 right-0 w-64 h-64 bg-cyan-500 rounded-full mix-blend-screen filter blur-[120px] opacity-10 pointer-events-none"></div>
+
+        <div class="relative z-10">
+            <div class="flex justify-between items-center border-b border-white/10 pb-5 mb-8">
+                <div class="flex items-center gap-4">
+                    <img src="https://i.postimg.cc/xqr3BnQh/Messenger-creation-48210E58-0DBC-45DF-B59E-A4641238DDE0.jpg" alt="Logo" class="w-12 h-12 rounded-xl shadow-[0_0_15px_rgba(14,165,233,0.4)] object-cover border border-cyan-500/30">
+                    <div>
+                        <h1 class="text-xl font-black text-white tracking-tight">TRUSTME RECAP AI PRO</h1>
+                        <p id="expiryStatus" class="text-[11px] font-bold text-emerald-400 uppercase tracking-widest mt-0.5"></p>
+                        <p id="creditStatus" class="text-[11px] font-bold text-cyan-400 uppercase tracking-widest mt-0.5"></p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="glass-input hover:bg-red-500/10 hover:border-red-500/50 hover:text-red-400 text-gray-400 px-4 py-2 rounded-xl text-xs font-bold transition">ထွက်မည်</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-gray-800 to-black rounded-2xl p-[2px] shadow-lg border border-white/10 relative overflow-hidden h-full flex items-center justify-center">
+                    <div class="p-6 text-center w-full">
+                        <h2 class="text-xl font-black text-gold mb-3">TRUSTME RECAP AI PRO</h2>
+                        <p class="text-sm text-green-accent font-bold leading-relaxed">
+                            အသုံးပြုသူများ အဆင်ပြေချောမွေ့စွာ အသုံးပြုနိုင်ရန် <br>
+                            TRUSTME RECAP AI PRO TEAM မှ<br>အစွမ်းကုန် ကြိုးစားဖန်တီးပေးထားပါသည်။
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-black/40 border-l-4 border-red-500 p-6 rounded-r-2xl shadow-sm h-full flex flex-col justify-center">
+                    <h3 class="text-red-title font-black text-lg mb-4 flex items-center gap-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        အသုံးပြုနည်း လမ်းညွှန်
+                    </h3>
+                    <ul class="text-sm text-blue-content space-y-3 list-disc list-inside font-medium leading-relaxed">
+                        <li>အသံသွင်းလိုသော <b>ဗီဒီယိုဖိုင်</b> ကို ရွေးပါ။ (300 MB အထိ ရပါသည်)</li>
+                        <li>ကိုယ်နှစ်သက်ရာ <b>မြန်မာအသံ Character</b> ကို အောက်တွင် ရွေးချယ်ပါ။</li>
+                        <li><b>Start Dubbing</b> ခလုတ်ကို နှိပ်ပါ (၁ ပုဒ်လျှင် 20 pts ဖြတ်ပါမည်)။</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-2 uppercase tracking-wider">🎙️ Burmese Voice Characters</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="voiceContainer">
+                            <button type="button" data-voice="Thiha (Male)" class="voice-btn active p-2.5 rounded-xl border border-purple-500/50 bg-purple-500/20 text-purple-300 flex flex-col items-center justify-center gap-1 transition shadow-[0_0_10px_rgba(139,92,246,0.3)]">
+                                <span class="text-2xl">👨🏻</span>
+                                <span class="text-[10px] font-bold">Thiha</span>
+                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Normal</span>
+                            </button>
+                            <button type="button" data-voice="Yannaing (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white">
+                                <span class="text-2xl">🧑🏻</span>
+                                <span class="text-[10px] font-bold">Yannaing</span>
+                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Young</span>
+                            </button>
+                            <button type="button" data-voice="Kyawswar (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white">
+                                <span class="text-2xl">👨🏽</span>
+                                <span class="text-[10px] font-bold">Kyawswar</span>
+                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Mature</span>
+                            </button>
+                            <button type="button" data-voice="Sithu (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white">
+                                <span class="text-2xl">🕵🏻‍♂️</span>
+                                <span class="text-[10px] font-bold">Sithu</span>
+                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Action</span>
+                            </button>
+                            
+                            <button type="button" data-voice="Nilar (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👩🏻</span>
+                                <span class="text-[10px] font-bold">Nilar</span>
+                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Normal</span>
+                            </button>
+                            <button type="button" data-voice="Thazin (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👧🏻</span>
+                                <span class="text-[10px] font-bold">Thazin</span>
+                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Active</span>
+                            </button>
+                            <button type="button" data-voice="Lamin (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👩🏻‍💼</span>
+                                <span class="text-[10px] font-bold">Lamin</span>
+                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Calm</span>
+                            </button>
+                            <button type="button" data-voice="Myatnoe (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👵🏻</span>
+                                <span class="text-[10px] font-bold">Myatnoe</span>
+                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Mature</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-purple-400 mb-2 uppercase tracking-wider flex items-center gap-1">🎭 Recap Style</label>
+                        <select id="styleSelect" class="glass-input w-full rounded-xl p-3.5 text-sm border-purple-500/30 appearance-none cursor-pointer">
+                            <option value="Normal" selected>ပုံမှန် ရှင်းလင်းစွာ (Normal)</option>
+                            <option value="Funny">ဟာသပုံစံ (Funny)</option>
+                            <option value="Action">အက်ရှင်ဆန်ဆန် (Action)</option>
+                            <option value="Drama">ခံစားချက်အပြည့် (Drama)</option>
+                        </select>
+                    </div>
+
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-4">
+                        <label class="block text-xs font-black text-cyan-400 uppercase tracking-wider flex items-center gap-1">©️ Watermark & Logo Overlay</label>
+                        
+                        <div class="flex gap-2">
+                            <input type="text" id="watermarkInput" placeholder="Watermark Text (Optional)" class="glass-input w-1/2 rounded-xl p-3.5 text-sm border-cyan-500/30">
+                            <select id="wmPos" class="glass-input w-1/4 rounded-xl p-3.5 text-sm appearance-none cursor-pointer text-center">
+                                <option value="Right" selected>ညာ</option>
+                                <option value="Left">ဘယ်</option>
+                            </select>
+                            <select id="wmColor" class="glass-input w-1/4 rounded-xl p-3.5 text-sm appearance-none cursor-pointer text-center">
+                                <option value="cyan" selected>Cyan</option>
+                                <option value="pink">Pink</option>
+                                <option value="green">Green</option>
+                                <option value="gold">Gold</option>
+                            </select>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <div class="w-3/4">
+                                <input type="file" id="logoFile" accept="image/png,image/jpeg" class="logo-file-input w-full">
+                                <p id="logoName" class="text-[11px] text-emerald-400 mt-1 px-1 font-bold hidden"></p>
+                            </div>
+                            <select id="logoPos" class="glass-input w-1/4 rounded-xl p-3.5 text-sm appearance-none cursor-pointer text-center border-emerald-500/30">
+                                <option value="Left" selected>ဘယ်</option>
+                                <option value="Right">ညာ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-2 uppercase tracking-wider">📱 Output Aspect Ratio</label>
+                        <div class="grid grid-cols-4 gap-3" id="ratioContainer">
+                            <button data-ratio="16:9" class="ratio-btn rounded-xl p-3 flex flex-col items-center gap-2">
+                                <svg class="w-5 h-5 opacity-80" fill="currentColor" viewBox="0 0 576 512"><path d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z"/></svg>
+                                <span class="text-[10px] font-bold">16:9</span>
+                            </button>
+                            <button data-ratio="9:16" class="ratio-btn active rounded-xl p-3 flex flex-col items-center gap-2">
+                                <svg class="w-4 h-5 opacity-90" fill="currentColor" viewBox="0 0 448 512"><path d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z"/></svg>
+                                <span class="text-[10px] font-bold">9:16</span>
+                            </button>
+                            <button data-ratio="3:4" class="ratio-btn rounded-xl p-3 flex flex-col items-center gap-2">
+                                <div class="w-3.5 h-5 border-[2px] border-current rounded-sm opacity-80"></div>
+                                <span class="text-[10px] font-bold">3:4</span>
+                            </button>
+                            <button data-ratio="1:1" class="ratio-btn rounded-xl p-3 flex flex-col items-center gap-2">
+                                <div class="w-4 h-4 border-[2px] border-current rounded-sm opacity-80"></div>
+                                <span class="text-[10px] font-bold">1:1</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="glass-input rounded-3xl p-5 text-center flex flex-col justify-center relative group border-dashed border-2 hover:border-purple-400 transition-colors bg-white/5">
+                        <input type="file" id="videoFile" accept="video/mp4,video/x-m4v,video/*" class="custom-file-input w-full mb-3 relative z-10">
+                        <p id="fileName" class="text-xs text-purple-300 font-bold px-2 truncate relative z-10">အများဆုံး File Size: 300 MB</p>
+                    </div>
+
+                    <div class="glass-input rounded-3xl p-5 text-center flex flex-col justify-center relative group border-dashed border-2 hover:border-cyan-400 transition-colors bg-white/5">
+                        <input type="file" id="bgmFile" accept="audio/mp3,audio/wav" class="bgm-file-input w-full mb-3 relative z-10">
+                        <p id="bgmName" class="text-xs text-cyan-300 font-bold px-2 truncate relative z-10 hidden"></p>
+                    </div>
+
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-4">
+                        <label class="block text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1">🎛️ Audio Mixer</label>
+                        <div>
+                            <div class="flex justify-between text-[10px] text-gray-300 mb-1 font-bold">
+                                <span>Voice Over Volume</span>
+                                <span id="voiceVolLabel" class="text-cyan-400">100%</span>
+                            </div>
+                            <input type="range" id="volVoice" min="0" max="200" value="100" class="w-full" oninput="document.getElementById('voiceVolLabel').innerText = this.value + '%'">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[10px] text-gray-300 mb-1 font-bold mt-2">
+                                <span>Background Music (BGM)</span>
+                                <span id="bgmVolLabel" class="text-cyan-400">5%</span>
+                            </div>
+                            <input type="range" id="volBgm" min="0" max="100" value="5" class="w-full" oninput="document.getElementById('bgmVolLabel').innerText = this.value + '%'">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-red-title mb-2 mt-4 uppercase tracking-wider">🔑 မိမိကိုယ်ပိုင် Gemini API Key <span class="bg-gray-700 text-gray-300 px-1.5 py-0.5 rounded text-[8px] ml-1">OPTIONAL</span></label>
+                        <input type="password" id="userApiKey" placeholder="ဆာဗာ Key ကိုသုံးရန် အလွတ်ထားပါ" class="w-full rounded-xl p-3.5 text-sm bg-white text-black outline-none border-2 border-transparent focus:border-red-500 shadow-inner">
+                        <p class="text-[10px] text-gray-400 mt-2 font-medium bg-white/5 p-2 rounded-lg border border-white/10">💡 Server မအားပါက လွတ်လပ်စွာအသုံးပြုနိုင်ရန် ကိုယ်ပိုင် API key ဖြင့်သုံးနိုင်ပါသည်။</p>
+                    </div>
+
+                    <div id="previewContainer" class="hidden mt-4 w-full rounded-xl overflow-hidden bg-black/50 border border-white/10 relative shadow-2xl relative z-10">
+                        <span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-md border border-white/10">မူရင်း Video</span>
+                        <video id="inputVideoPreview" controls class="w-full" style="max-height: 180px;"></video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-black/40 border border-emerald-500/30 rounded-2xl p-5 mb-8 backdrop-blur-sm relative overflow-hidden">
+                <h3 class="text-emerald-400 font-bold text-sm mb-4 flex items-center gap-2 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    Anti-Copyright Filters (Bypass Content ID)
+                </h3>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span class="text-[11px] text-gray-300 font-bold">Cinematic Blur</span>
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" id="chkBlur" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="chkBlur" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-500 cursor-pointer"></label>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span class="text-[11px] text-gray-300 font-bold">Auto Flip (L/R)</span>
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" id="chkFlip" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="chkFlip" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-500 cursor-pointer"></label>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span class="text-[11px] text-gray-300 font-bold">Smart Zoom</span>
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" id="chkZoom" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="chkZoom" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-500 cursor-pointer"></label>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span class="text-[11px] text-gray-300 font-bold">Color Bypass</span>
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" id="chkColor" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="chkColor" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-500 cursor-pointer"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-black/40 border border-purple-500/30 rounded-2xl p-5 mb-8 backdrop-blur-sm relative overflow-hidden">
+                <h3 class="text-purple-400 font-bold text-sm mb-4 flex items-center gap-2 drop-shadow-[0_0_5px_rgba(139,92,246,0.5)]">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Advanced Video Settings
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-300 mb-2 uppercase tracking-wider">Video Quality (Resolution)</label>
+                        <select id="qualitySelect" class="glass-input w-full rounded-xl p-3 text-sm appearance-none cursor-pointer border-purple-500/30 text-center">
+                            <option value="1080p">1080p (High Quality)</option>
+                            <option value="720p" selected>720p (Standard HD)</option>
+                            <option value="480p">480p (Fast Render)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10 h-[46px]">
+                            <span class="text-[11px] text-cyan-300 font-bold flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" /></svg>
+                                Auto Myanmar Subtitles
+                            </span>
+                            <div class="relative inline-block w-10 align-middle select-none">
+                                <input type="checkbox" id="chkSubtitle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                <label for="chkSubtitle" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-500 cursor-pointer"></label>
+                            </div>
+                        </div>
+                        
+                        <div id="colorPickerBox" class="flex gap-2 items-center bg-white/5 p-2.5 rounded-xl border border-white/10 transition-all opacity-50 pointer-events-none">
+                            <span class="text-[10px] text-gray-400 font-bold w-1/3">Text Color:</span>
+                            <select id="subColorSelect" class="glass-input w-2/3 rounded-lg p-2 text-xs appearance-none cursor-pointer text-center">
+                                <option value="yellow" selected>🟡 Yellow</option>
+                                <option value="white">⚪ White</option>
+                                <option value="green">🟢 Green</option>
+                                <option value="cyan">🔵 Cyan</option>
+                            </select>
+                        </div>
+
+                        <div id="bgColorPickerBox" class="flex gap-2 items-center bg-white/5 p-2.5 rounded-xl border border-white/10 transition-all opacity-50 pointer-events-none">
+                            <span class="text-[10px] text-gray-400 font-bold w-1/3">BG Box:</span>
+                            <select id="subBgSelect" class="glass-input w-2/3 rounded-lg p-2 text-xs appearance-none cursor-pointer text-center">
+                                <option value="none" selected>❌ မပါ</option>
+                                <option value="black">⬛ အမည်း (Black)</option>
+                                <option value="red">🟥 အနီ (Red)</option>
+                                <option value="blue">🟦 အပြာ (Blue)</option>
+                                <option value="purple">🟪 ခရမ်း (Purple)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-5 border-t border-purple-500/20">
+                    <label class="block text-[11px] font-bold text-purple-300 mb-2 uppercase tracking-wider flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" /></svg>
+                        Smart Sync Splitting (အပိုင်းခွဲစနစ်)
+                    </label>
+                    <p class="text-[10px] text-gray-400 mb-3 leading-relaxed">ဗီဒီယိုအရှည်များအတွက် ရုပ်နှင့်သံ အတိအကျကိုက်ညီရန် အပိုင်းခွဲ၍ Render လုပ်ပါ။ ဆာဗာဝန်မပိစေရန် လိုအပ်မှသာ အပိုင်းများများရွေးပါ။</p>
+                    <div class="flex gap-2" id="splitContainer">
+                        <button type="button" data-split="1" class="split-btn active flex-1 py-2.5 rounded-xl border border-purple-500/50 bg-purple-500/20 text-purple-300 text-xs font-bold transition shadow-[0_0_10px_rgba(139,92,246,0.3)]">1 Part</button>
+                        <button type="button" data-split="2" class="split-btn flex-1 py-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 text-xs font-bold transition hover:bg-white/10 hover:text-white">2 Parts</button>
+                        <button type="button" data-split="3" class="split-btn flex-1 py-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 text-xs font-bold transition hover:bg-white/10 hover:text-white">3 Parts</button>
+                        <button type="button" data-split="4" class="split-btn flex-1 py-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 text-xs font-bold transition hover:bg-white/10 hover:text-white">4 Parts</button>
+                        <button type="button" data-split="5" class="split-btn flex-1 py-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 text-xs font-bold transition hover:bg-white/10 hover:text-white">5 Parts</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pipelineSection" class="hidden mb-8 glass-input border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-[50px]"></div>
+                
+                <div class="flex justify-between items-center mb-5 relative z-10">
+                    <h3 class="font-bold text-white flex items-center gap-2">လုပ်ငန်းစဉ် လုပ်ဆောင်နေပါသည်...</h3>
+                    <span id="pipelinePercent" class="text-lg font-black text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">0%</span>
+                </div>
+                
+                <div class="w-full bg-black/40 rounded-full h-2 mb-6 border border-white/5 relative z-10 overflow-hidden">
+                    <div id="pipelineBar" class="h-2 rounded-full transition-all duration-500 animated-bar shadow-[0_0_15px_rgba(14,165,233,0.8)]" style="width: 0%"></div>
+                </div>
+                
+                <div class="space-y-3 relative z-10">
+                    <div id="step1" class="step-card step-pending flex items-center gap-4 p-3.5 rounded-xl">
+                        <div id="icon1" class="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0"></div>
+                        <span class="text-sm font-semibold tracking-wide">အသံခွဲထုတ်ပြီး မြန်မာလို ဘာသာပြန်ခြင်း</span>
+                    </div>
+                    <div id="step2" class="step-card step-pending flex items-center gap-4 p-3.5 rounded-xl">
+                        <div id="icon2" class="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0"></div>
+                        <span class="text-sm font-semibold tracking-wide">မြန်မာ အသံဖန်တီးခြင်း</span>
+                    </div>
+                    <div id="step3" class="step-card step-pending flex items-center gap-4 p-3.5 rounded-xl">
+                        <div id="icon3" class="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0"></div>
+                        <span class="text-sm font-semibold tracking-wide">ရုပ်နှင့်သံ အတိအကျ ပေါင်းစပ်ခြင်း</span>
+                    </div>
+                </div>
+                
+                <p id="pipelineStatusText" class="text-xs font-bold text-emerald-400 mt-5 flex items-center gap-2 relative z-10">
+                    <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 
+                    <span id="subStatusText">ဆာဗာနှင့် ချိတ်ဆက်နေပါသည်...</span>
+                </p>
+            </div>
+
+            <div id="resultSection" class="hidden mb-8 p-6 border-2 border-emerald-500/50 bg-[#022c22] rounded-3xl shadow-[0_0_30px_rgba(16,185,129,0.2)] relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-emerald-500/10 to-transparent pointer-events-none"></div>
+                <h3 class="text-emerald-400 font-black mb-1 text-2xl text-center relative z-10">🎉 အောင်မြင်ပါသည်!</h3>
+                <p class="text-[11px] text-emerald-200/70 font-bold uppercase tracking-widest text-center mb-6 relative z-10">Video is ready to download</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 relative z-10">
+                    <div class="space-y-4">
+                        <div class="rounded-2xl overflow-hidden bg-black shadow-xl border-2 border-emerald-500/30 flex justify-center items-center h-[200px]">
+                            <video id="finalVideoPlayer" controls class="max-w-full max-h-full"></video>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <a id="downloadBtn" target="_blank" class="flex items-center justify-center gap-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-3 rounded-xl font-bold text-xs hover:scale-105 transition shadow-lg shadow-emerald-500/30">🎬 Video ဆွဲမည်</a>
+                            <a id="downloadAudioBtn" target="_blank" class="flex items-center justify-center gap-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-3 rounded-xl font-bold text-xs hover:scale-105 transition shadow-lg shadow-blue-500/30">🎵 MP3 ဆွဲမည်</a>
+                            <a id="downloadTextBtn" target="_blank" class="flex items-center justify-center gap-1 glass-input p-3 rounded-xl font-bold text-xs hover:bg-white/10 transition">📄 TXT ဆွဲမည်</a>
+                            <button onclick="window.location.reload()" class="flex items-center justify-center gap-1 glass-input p-3 rounded-xl font-bold text-xs hover:bg-white/10 transition text-red-400 border-red-500/30">🔄 နောက်တစ်ပုဒ်</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-black/40 border border-emerald-500/20 rounded-2xl p-4 flex flex-col shadow-inner">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-emerald-400">📝 မြန်မာစာတန်း (Transcript)</span>
+                            <button id="copyBtn" class="text-[10px] bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/30 transition">Copy Text</button>
+                        </div>
+                        <textarea id="transcriptText" class="w-full flex-grow bg-transparent text-gray-300 text-xs outline-none resize-none min-h-[150px]" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="errorSection" class="hidden mb-6 p-5 bg-red-900/20 border border-red-500/50 rounded-2xl text-red-400 text-sm font-bold flex items-center gap-3 backdrop-blur-sm shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                <svg class="w-6 h-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span id="errorText"></span>
+            </div>
+
+            <button id="processBtn" class="neon-btn-primary w-full py-5 font-black text-lg rounded-2xl uppercase tracking-widest">
+                Start Dubbing (-20 pts)
+            </button>
+        </div>
+    </div>
+
+<script>
+// 🚨 အရေးကြီး: Cloudflare Worker ၏ URL အပြည့်အစုံကို ဤနေရာတွင် ထည့်ပါ 🚨
+const API_BASE_URL = "https://your-worker-name.your-subdomain.workers.dev"; // 👈 ပြောင်းရန်
+
+const loginScreen = document.getElementById('loginScreen'); 
+const appScreen = document.getElementById('appScreen');
+const loginBtn = document.getElementById('loginBtn'); 
+const accessCodeInput = document.getElementById('accessCode');
+const loginError = document.getElementById('loginError'); 
+const expiryStatus = document.getElementById('expiryStatus'); 
+const creditStatus = document.getElementById('creditStatus');
+
+let deviceId = localStorage.getItem('trustme_device_id');
+if (!deviceId) {
+    deviceId = 'DEV-' + Math.random().toString(36).substr(2, 10).toUpperCase();
+    localStorage.setItem('trustme_device_id', deviceId);
+}
+
+async function checkAuth() {
+    const authData = JSON.parse(localStorage.getItem('trustme_auth'));
+    if (authData && authData.expireDate > Date.now()) {
+        loginScreen.classList.add('hidden');
+        appScreen.classList.remove('hidden');
+        
+        const daysLeft = Math.ceil((authData.expireDate - Date.now()) / (1000 * 60 * 60 * 24));
+        
+        // Use a generic admin bypass check for UI (API will still verify)
+        if (daysLeft > 10000) {
+            expiryStatus.innerHTML = "<span class='text-emerald-400'>●</span> Unlimited Access";
+            creditStatus.innerHTML = "<span class='text-cyan-400'>💎</span> Unlimited Credits";
+        } else {
+            expiryStatus.innerHTML = "<span class='text-emerald-400'>●</span> " + daysLeft + " ရက် ကျန်သေးသည်";
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/user-info`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ code: authData.code }) 
+                });
+                const data = await res.json();
+                if(data.success) creditStatus.innerHTML = "<span class='text-cyan-400'>💎</span> " + data.credits + " ပွိုင့်";
+                else if(data.success === false) logout(); 
+            } catch(e){}
+        }
+    } else {
+        localStorage.removeItem('trustme_auth');
+        loginScreen.classList.remove('hidden');
+        appScreen.classList.add('hidden');
+    }
+}
+
+loginBtn.addEventListener('click', async () => {
+    const code = accessCodeInput.value.trim();
+    if (!code) return;
+    
+    loginBtn.innerText = "စစ်ဆေးနေပါသည်...";
+    loginBtn.disabled = true;
+    loginError.classList.add('hidden');
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/api/verify-code`, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ code, deviceId }) 
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            localStorage.setItem('trustme_auth', JSON.stringify({ expireDate: data.expireAt, code }));
+            checkAuth();
+        } else {
+            loginError.innerText = data.message || data.error;
+            loginError.classList.remove('hidden');
+        }
+    } catch (err) {
+        loginError.innerText = "ချိတ်ဆက်မှု မအောင်မြင်ပါ။ ပြန်လည်ကြိုးစားပါ။";
+        loginError.classList.remove('hidden');
+    }
+    
+    loginBtn.innerText = "စနစ်အတွင်းသို့ ဝင်မည်";
+    loginBtn.disabled = false;
+});
+
+function logout() { localStorage.removeItem('trustme_auth'); location.reload(); }
+checkAuth();
+
+// DOM Elements
+const fileInput = document.getElementById('videoFile'); 
+const bgmInput = document.getElementById('bgmFile'); 
+const logoInput = document.getElementById('logoFile');
+const processBtn = document.getElementById('processBtn'); 
+const pipelineSection = document.getElementById('pipelineSection');
+const chkSubtitle = document.getElementById('chkSubtitle');
+const colorPickerBox = document.getElementById('colorPickerBox');
+const bgColorPickerBox = document.getElementById('bgColorPickerBox');
+
+let selectedRatio = '9:16';
+let selectedSplit = 1; 
+let selectedVoice = 'Thiha (Male)'; 
+
+document.querySelectorAll('.ratio-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        selectedRatio = e.currentTarget.dataset.ratio;
+    });
+});
+
+document.querySelectorAll('.split-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.split-btn').forEach(b => {
+            b.classList.remove('active', 'border-purple-500/50', 'bg-purple-500/20', 'text-purple-300', 'shadow-[0_0_10px_rgba(139,92,246,0.3)]');
+            b.classList.add('border-white/10', 'bg-white/5', 'text-gray-400');
+        });
+        const t = e.currentTarget;
+        t.classList.remove('border-white/10', 'bg-white/5', 'text-gray-400');
+        t.classList.add('active', 'border-purple-500/50', 'bg-purple-500/20', 'text-purple-300', 'shadow-[0_0_10px_rgba(139,92,246,0.3)]');
+        selectedSplit = parseInt(t.dataset.split);
+    });
+});
+
+document.querySelectorAll('.voice-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.voice-btn').forEach(b => {
+            b.classList.remove('active', 'border-purple-500/50', 'bg-purple-500/20', 'text-purple-300', 'shadow-[0_0_10px_rgba(139,92,246,0.3)]');
+            b.classList.add('border-white/10', 'bg-white/5', 'text-gray-400');
+        });
+        const t = e.currentTarget;
+        t.classList.remove('border-white/10', 'bg-white/5', 'text-gray-400');
+        t.classList.add('active', 'border-purple-500/50', 'bg-purple-500/20', 'text-purple-300', 'shadow-[0_0_10px_rgba(139,92,246,0.3)]');
+        selectedVoice = t.dataset.voice;
+    });
+});
+
+chkSubtitle.addEventListener('change', (e) => {
+    if(e.target.checked) {
+        colorPickerBox.classList.remove('opacity-50', 'pointer-events-none');
+        bgColorPickerBox.classList.remove('opacity-50', 'pointer-events-none');
+    } else {
+        colorPickerBox.classList.add('opacity-50', 'pointer-events-none');
+        bgColorPickerBox.classList.add('opacity-50', 'pointer-events-none');
+    }
+});
+
+fileInput.addEventListener('change', (e) => {
+    if(e.target.files.length > 0) {
+        document.getElementById('fileName').textContent = e.target.files[0].name;
+        document.getElementById('inputVideoPreview').src = URL.createObjectURL(e.target.files[0]);
+        document.getElementById('previewContainer').classList.remove('hidden');
+    }
+});
+
+bgmInput.addEventListener('change', (e) => {
+    if(e.target.files.length > 0) {
+        document.getElementById('bgmName').textContent = "🎵 " + e.target.files[0].name;
+        document.getElementById('bgmName').classList.remove('hidden');
+    }
+});
+
+logoInput.addEventListener('change', (e) => {
+    if(e.target.files.length > 0) {
+        document.getElementById('logoName').textContent = "🖼️ " + e.target.files[0].name;
+        document.getElementById('logoName').classList.remove('hidden');
+    }
+});
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(document.getElementById('transcriptText').value).then(() => {
+        document.getElementById('copyBtn').innerText = "Copied!"; 
+        setTimeout(() => { document.getElementById('copyBtn').innerText = "Copy Text"; }, 2000);
+    });
+});
+
+const svgPending = '<div class="w-2 h-2 bg-current rounded-full opacity-50"></div>';
+const svgSpinner = '<svg class="animate-spin w-5 h-5 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+const svgCheck = '<svg class="w-4 h-4 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.8)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>';
+
+function updateStep(stepNum, state) {
+    const step = document.getElementById('step' + stepNum);
+    const icon = document.getElementById('icon' + stepNum);
+    
+    step.classList.remove('step-pending', 'step-active', 'step-completed');
+    icon.className = 'w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0'; 
+    
+    if(state === 'pending') {
+        step.classList.add('step-pending');
+        icon.classList.add('border-current');
+        icon.innerHTML = svgPending;
+    } else if(state === 'active') {
+        step.classList.add('step-active');
+        icon.classList.add('border-current');
+        icon.innerHTML = svgSpinner;
+    } else if(state === 'completed') {
+        step.classList.add('step-completed');
+        icon.classList.add('border-emerald-500/50', 'bg-emerald-500/10');
+        icon.innerHTML = svgCheck;
+    }
+}
+
+function updatePipeline(percent, subText) {
+    pipelineSection.classList.remove('hidden');
+    document.getElementById('pipelineBar').style.width = percent + '%';
+    document.getElementById('pipelinePercent').textContent = percent + '%';
+    document.getElementById('subStatusText').textContent = subText;
+}
+
+processBtn.addEventListener('click', async () => {
+    const file = fileInput.files[0];
+    
+    if (!file) { 
+        alert("ကျေးဇူးပြု၍ Video ဖိုင်အရင်ရွေးချယ်ပါ။"); 
+        return; 
+    }
+
+    const MAX_FILE_SIZE = 300 * 1024 * 1024; 
+    if (file.size > MAX_FILE_SIZE) {
+        document.getElementById('errorText').textContent = "ဖိုင်ဆိုဒ်ကြီးလွန်းပါသည်။ ဆာဗာ အကန့်အသတ်အရ 300 MB အောက်သာ လက်ခံပါသည်။";
+        document.getElementById('errorSection').classList.remove('hidden');
+        return;
+    }
+
+    processBtn.disabled = true;
+    processBtn.innerHTML = 'ဆာဗာသို့ တင်နေပါသည်...';
+    document.getElementById('errorSection').classList.add('hidden');
+    
+    for(let i=1; i<=3; i++) { updateStep(i, 'pending'); }
+    
+    updatePipeline(5, "ဆာဗာနှင့် ချိတ်ဆက်နေပါသည်...");
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("voice", selectedVoice); 
+    formData.append("ratio", selectedRatio);
+    formData.append("style", document.getElementById('styleSelect').value);
+    formData.append("watermark", document.getElementById('watermarkInput').value);
+    formData.append("wm_pos", document.getElementById('wmPos').value);
+    formData.append("watermark_color", document.getElementById('wmColor').value);
+    
+    formData.append("is_blur", document.getElementById('chkBlur').checked ? "true" : "false");
+    formData.append("is_flip", document.getElementById('chkFlip').checked ? "true" : "false");
+    formData.append("is_zoom", document.getElementById('chkZoom').checked ? "true" : "false");
+    formData.append("is_color", document.getElementById('chkColor').checked ? "true" : "false");
+    formData.append("is_subtitle", document.getElementById('chkSubtitle').checked ? "true" : "false");
+    formData.append("sub_color", document.getElementById('subColorSelect').value);
+    formData.append("sub_bg", document.getElementById('subBgSelect').value);
+    formData.append("volume_voice", document.getElementById('volVoice').value);
+    formData.append("volume_bgm", document.getElementById('volBgm').value);
+    formData.append("quality", document.getElementById('qualitySelect').value);
+    formData.append("split_parts", selectedSplit); 
+
+    if(bgmInput.files[0]) formData.append("bgm_file", bgmInput.files[0]);
+    if(logoInput.files[0]) {
+        formData.append("logo_file", logoInput.files[0]);
+        formData.append("logo_pos", document.getElementById('logoPos').value);
+    }
+    
+    const apiKey = document.getElementById('userApiKey').value.trim();
+    if(apiKey) formData.append("user_api_key", apiKey);
+
+    const authData = JSON.parse(localStorage.getItem('trustme_auth'));
+    const loginCode = authData ? authData.code : '';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/upload`, { 
+            method: 'POST', headers: { 'X-Login-Code': loginCode }, body: formData 
+        });
+        
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(errData.error || "ဆာဗာ ပြုပြင်နေပါသည်။ (Backend Offline ဖြစ်နေနိုင်ပါသည်)");
+        }
+        
+        const data = await response.json();
+        
+        if (data.jobId) { 
+            processBtn.innerHTML = 'လုပ်ဆောင်နေပါသည်...'; 
+            trackStatus(data.jobId); 
+        } else { 
+            throw new Error(data.error || "စတင်၍မရပါ။ ပြန်လည်ကြိုးစားပေးပါ။"); 
+        }
+    } catch (error) { 
+        document.getElementById('errorText').textContent = error.message; 
+        document.getElementById('errorSection').classList.remove('hidden'); 
+        processBtn.disabled = false; 
+        processBtn.innerHTML = 'ပြန်လည် ကြိုးစားမည်'; 
+    }
+});
+
+function trackStatus(jobId) {
+    let pollInterval = 3000;
+    let errorCount = 0;
+    let currentStatus = '';
+
+    const poll = async () => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/status/${jobId}`);
+            if (!res.ok) throw new Error("Server error");
+            const data = await res.json();
+            errorCount = 0; 
+
+            if (data.status !== currentStatus) {
+                currentStatus = data.status;
+                let msg = data.message;
+
+                if(currentStatus === 'pending') {
+                    updatePipeline(15, msg || "စတင်ရန် ပြင်ဆင်နေပါသည်...");
+                    updateStep(1, 'active');
+                } else if(currentStatus === 'transcribing') {
+                    updatePipeline(35, msg || "မြန်မာလို ဘာသာပြန်နေသည်...");
+                    updateStep(1, 'active');
+                } else if(currentStatus === 'generating_audio') {
+                    updatePipeline(60, msg || "မြန်မာအသံ ဖန်တီးနေသည်...");
+                    updateStep(1, 'completed');
+                    updateStep(2, 'active');
+                } else if(currentStatus === 'merging_video') {
+                    updatePipeline(85, msg || "Video နှင့် အသံ ပေါင်းစပ်နေသည်...");
+                    updateStep(1, 'completed'); 
+                    updateStep(2, 'completed');
+                    updateStep(3, 'active');
+                } else if(currentStatus === 'uploading_final_to_drive') {
+                    updatePipeline(95, msg || "အဆုံးသတ်နေပါသည်...");
+                    updateStep(3, 'active');
+                } else if(currentStatus === 'completed') {
+                    updatePipeline(100, "ပြီးစီးပါပြီ!");
+                    updateStep(1, 'completed'); 
+                    updateStep(2, 'completed'); 
+                    updateStep(3, 'completed'); 
+                    document.querySelector('#pipelineStatusText svg').classList.add('hidden');
+                    
+                    document.getElementById('finalVideoPlayer').src = `${API_BASE_URL}${data.drive_link}`;
+                    document.getElementById('downloadBtn').href = `${API_BASE_URL}${data.drive_link}`;
+                    
+                    if(data.audio_link) document.getElementById('downloadAudioBtn').href = `${API_BASE_URL}${data.audio_link}`;
+                    if(data.text_link) document.getElementById('downloadTextBtn').href = `${API_BASE_URL}${data.text_link}`;
+                    if(data.transcript) document.getElementById('transcriptText').value = data.transcript;
+                    
+                    pipelineSection.classList.add('hidden');
+                    document.getElementById('resultSection').classList.remove('hidden');
+                    processBtn.classList.add('hidden'); 
+                    checkAuth();
+                    return; 
+                } else if(currentStatus === 'failed') {
+                    throw new Error(data.error || "လုပ်ဆောင်နေစဉ် အမှားအယွင်းဖြစ်ပေါ်ခဲ့ပါသည်။");
+                } else {
+                    updatePipeline(20, msg || "အလုပ်လုပ်နေပါသည်...");
+                }
+            }
+
+            setTimeout(poll, pollInterval < 8000 ? pollInterval += 1000 : pollInterval);
+
+        } catch(e) { 
+            errorCount++;
+            if (errorCount >= 5) {
+                document.getElementById('errorText').textContent = e.message; 
+                document.getElementById('errorSection').classList.remove('hidden'); 
+                processBtn.disabled = false; 
+                processBtn.innerHTML = 'ပြန်လည် ကြိုးစားမည်'; 
+                return; 
+            }
+            setTimeout(poll, pollInterval);
+        }
+    };
+    
+    setTimeout(poll, pollInterval);
+}
+</script>
+</body>
+</html>
