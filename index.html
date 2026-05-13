@@ -48,12 +48,11 @@
 
         .text-gold {
             color: #fbbf24;
-            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+            text-shadow: 0 0 4px rgba(251, 191, 36, 0.25);
         }
         
         .text-green-accent { color: #34d399; }
-        .text-red-title { color: #ef4444; }
-        .text-blue-content { color: #60a5fa; }
+        .text-cyan-100 { color: #cffafe; } 
 
         .neon-btn-primary {
             background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
@@ -93,10 +92,34 @@
             box-shadow: inset 0 0 15px rgba(14, 165, 233, 0.3), 0 0 10px rgba(14, 165, 233, 0.2);
         }
 
+        /* SPEED FEATURE CSS */
+        .speed-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .speed-btn:hover:not(.active) { 
+            background: rgba(14, 165, 233, 0.1); 
+            border-color: var(--neon-cyan); 
+            color: white; 
+        }
+        .speed-btn.active {
+            background: rgba(14, 165, 233, 0.2);
+            border-color: var(--neon-cyan);
+            color: #38bdf8;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
+        }
+
         .custom-file-input::-webkit-file-upload-button { visibility: hidden; display: none; }
         
         .custom-file-input::before { 
-            content: 'ဗီဒီယိုဖိုင် ရွေးချယ်ပါ (Upload Video)'; 
+            content: '☁️ ဗီဒီယိုဖိုင် ရွေးချယ်ပါ (Upload Video)'; 
             display: inline-block; 
             background: rgba(255, 255, 255, 0.05); 
             color: #a78bfa; 
@@ -105,7 +128,7 @@
             outline: none; 
             white-space: nowrap; 
             cursor: pointer; 
-            font-weight: 600; 
+            font-weight: 800; 
             width: 100%; 
             text-align: center; 
             border: 1px dashed rgba(139, 92, 246, 0.5); 
@@ -129,7 +152,7 @@
             outline: none; 
             white-space: nowrap; 
             cursor: pointer; 
-            font-weight: 600; 
+            font-weight: 800; 
             width: 100%; 
             text-align: center; 
             border: 1px dashed rgba(14, 165, 233, 0.5); 
@@ -153,7 +176,7 @@
             outline: none; 
             white-space: nowrap; 
             cursor: pointer; 
-            font-weight: 600; 
+            font-weight: 800; 
             width: 100%; 
             text-align: center; 
             border: 1px dashed rgba(16, 185, 129, 0.5); 
@@ -268,13 +291,13 @@
                     </div>
                 </div>
 
-                <div class="bg-black/40 border-l-4 border-red-500 p-6 rounded-r-2xl shadow-sm h-full flex flex-col justify-center">
-                    <h3 class="text-red-title font-black text-lg mb-4 flex items-center gap-2">
+                <div class="bg-black/40 border-l-4 border-emerald-500 p-6 rounded-r-2xl shadow-sm h-full flex flex-col justify-center">
+                    <h3 class="text-emerald-400 font-black text-lg mb-4 flex items-center gap-2">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         အသုံးပြုနည်း လမ်းညွှန်
                     </h3>
-                    <ul class="text-sm text-blue-content space-y-3 list-disc list-inside font-medium leading-relaxed">
-                        <li>အသံသွင်းလိုသော <b>ဗီဒီယိုဖိုင်</b> ကို ရွေးပါ။ (300 MB အထိ ရပါသည်)</li>
+                    <ul class="text-sm text-cyan-100 space-y-3 list-disc list-inside font-medium leading-relaxed">
+                        <li>အသံသွင်းလိုသော <b>ဗီဒီယိုဖိုင်</b> ကို ရွေးပါ။ (100 MB အထိ ရပါသည်)</li>
                         <li>ကိုယ်နှစ်သက်ရာ <b>မြန်မာအသံ Character</b> ကို အောက်တွင် ရွေးချယ်ပါ။</li>
                         <li><b>Start Dubbing</b> ခလုတ်ကို နှိပ်ပါ (၁ ပုဒ်လျှင် 20 pts ဖြတ်ပါမည်)။</li>
                     </ul>
@@ -396,7 +419,7 @@
                 <div class="space-y-4">
                     <div class="glass-input rounded-3xl p-5 text-center flex flex-col justify-center relative group border-dashed border-2 hover:border-purple-400 transition-colors bg-white/5">
                         <input type="file" id="videoFile" accept="video/mp4,video/x-m4v,video/*" class="custom-file-input w-full mb-3 relative z-10">
-                        <p id="fileName" class="text-xs text-purple-300 font-bold px-2 truncate relative z-10">အများဆုံး File Size: 300 MB</p>
+                        <p id="fileName" class="text-xs text-purple-300 font-bold px-2 truncate relative z-10">အများဆုံး File Size: 100 MB</p>
                     </div>
 
                     <div class="glass-input rounded-3xl p-5 text-center flex flex-col justify-center relative group border-dashed border-2 hover:border-cyan-400 transition-colors bg-white/5">
@@ -502,7 +525,7 @@
                         </div>
                         
                         <div id="colorPickerBox" class="flex gap-2 items-center bg-white/5 p-2.5 rounded-xl border border-white/10 transition-all opacity-50 pointer-events-none">
-                            <span class="text-[10px] text-gray-400 font-bold w-1/3">Text Color:</span>
+                            <span class="text-[10px] text-gray-400 font-bold w-1/3">စာသားအရောင်:</span>
                             <select id="subColorSelect" class="glass-input w-2/3 rounded-lg p-2 text-xs appearance-none cursor-pointer text-center">
                                 <option value="yellow" selected>🟡 Yellow</option>
                                 <option value="white">⚪ White</option>
@@ -512,7 +535,7 @@
                         </div>
 
                         <div id="bgColorPickerBox" class="flex gap-2 items-center bg-white/5 p-2.5 rounded-xl border border-white/10 transition-all opacity-50 pointer-events-none">
-                            <span class="text-[10px] text-gray-400 font-bold w-1/3">BG Box:</span>
+                            <span class="text-[10px] text-gray-400 font-bold w-1/3">နောက်ခံအရောင်:</span>
                             <select id="subBgSelect" class="glass-input w-2/3 rounded-lg p-2 text-xs appearance-none cursor-pointer text-center">
                                 <option value="none" selected>❌ မပါ</option>
                                 <option value="black">⬛ အမည်း (Black)</option>
@@ -580,7 +603,30 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 relative z-10">
                     <div class="space-y-4">
-                        <div class="rounded-2xl overflow-hidden bg-black shadow-xl border-2 border-emerald-500/30 flex justify-center items-center h-[200px]">
+                        
+                        <div class="bg-black/40 border border-cyan-500/30 rounded-2xl p-5 relative overflow-hidden shadow-lg">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/10 rounded-full blur-[40px]"></div>
+                            <div class="flex justify-between items-center mb-3 relative z-10">
+                                <h3 class="text-cyan-400 font-black text-sm flex items-center gap-2">
+                                    ⚡ Speed ချိန်ညှိရန် 
+                                    <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full text-[9px] border border-emerald-500/30">(Free / Point မကုန်ပါ)</span>
+                                </h3>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mb-4 relative z-10">ဗီဒီယို အရမ်းနှေးနေပါက ရုပ်/သံ Speed ကို ထပ်တင်နိုင်ပါသည်။</p>
+                            <div class="flex flex-wrap gap-2 relative z-10" id="speedContainer">
+                                <button class="speed-btn active" data-speed="1.0">1.0x (မူရင်း)</button>
+                                <button class="speed-btn" data-speed="1.1">1.1x</button>
+                                <button class="speed-btn" data-speed="1.15">1.15x</button>
+                                <button class="speed-btn" data-speed="1.2">1.2x</button>
+                                <button class="speed-btn" data-speed="1.25">1.25x</button>
+                            </div>
+                            <div id="speedLoading" class="hidden mt-3 text-[11px] font-bold text-cyan-400 flex items-center gap-2 relative z-10">
+                                <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 
+                                Speed ပြောင်းလဲနေပါသည်... စက္ကန့်ပိုင်းသာ ကြာပါမည်...
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl overflow-hidden bg-black shadow-xl border-2 border-emerald-500/30 flex justify-center items-center h-[200px] transition-all duration-300">
                             <video id="finalVideoPlayer" controls class="max-w-full max-h-full"></video>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
@@ -613,8 +659,8 @@
     </div>
 
 <script>
-// 🚨 အရေးကြီး: Cloudflare Worker ၏ URL အပြည့်အစုံကို ဤနေရာတွင် ထည့်ပါ 🚨
-const API_BASE_URL = "https://your-worker-name.your-subdomain.workers.dev"; // 👈 ပြောင်းရန်
+// 🚨 လိုအပ်ပါက အောက်ပါ လိပ်စာကို မိမိ၏ Worker Link ဖြင့် အစားထိုးပါ
+const API_BASE_URL = "trustme-recap-v2.yannainglyin.workers.dev"; 
 
 const loginScreen = document.getElementById('loginScreen'); 
 const appScreen = document.getElementById('appScreen');
@@ -630,6 +676,8 @@ if (!deviceId) {
     localStorage.setItem('trustme_device_id', deviceId);
 }
 
+let currentJobId = null;
+
 async function checkAuth() {
     const authData = JSON.parse(localStorage.getItem('trustme_auth'));
     if (authData && authData.expireDate > Date.now()) {
@@ -638,14 +686,13 @@ async function checkAuth() {
         
         const daysLeft = Math.ceil((authData.expireDate - Date.now()) / (1000 * 60 * 60 * 24));
         
-        // Use a generic admin bypass check for UI (API will still verify)
         if (daysLeft > 10000) {
             expiryStatus.innerHTML = "<span class='text-emerald-400'>●</span> Unlimited Access";
             creditStatus.innerHTML = "<span class='text-cyan-400'>💎</span> Unlimited Credits";
         } else {
             expiryStatus.innerHTML = "<span class='text-emerald-400'>●</span> " + daysLeft + " ရက် ကျန်သေးသည်";
             try {
-                const res = await fetch(`${API_BASE_URL}/api/user-info`, { 
+                const res = await fetch(API_BASE_URL + '/api/user-info', { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' }, 
                     body: JSON.stringify({ code: authData.code }) 
@@ -671,7 +718,7 @@ loginBtn.addEventListener('click', async () => {
     loginError.classList.add('hidden');
 
     try {
-        const res = await fetch(`${API_BASE_URL}/api/verify-code`, { 
+        const res = await fetch(API_BASE_URL + '/api/verify-code', { 
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' }, 
             body: JSON.stringify({ code, deviceId }) 
@@ -697,7 +744,6 @@ loginBtn.addEventListener('click', async () => {
 function logout() { localStorage.removeItem('trustme_auth'); location.reload(); }
 checkAuth();
 
-// DOM Elements
 const fileInput = document.getElementById('videoFile'); 
 const bgmInput = document.getElementById('bgmFile'); 
 const logoInput = document.getElementById('logoFile');
@@ -744,6 +790,74 @@ document.querySelectorAll('.voice-btn').forEach(btn => {
         selectedVoice = t.dataset.voice;
     });
 });
+
+document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+        if(!currentJobId) return;
+        
+        document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        
+        const speed = e.currentTarget.dataset.speed;
+        const loadingDiv = document.getElementById('speedLoading');
+        const videoPlayer = document.getElementById('finalVideoPlayer');
+        
+        loadingDiv.classList.remove('hidden');
+        videoPlayer.style.opacity = "0.3"; 
+        
+        const formData = new FormData();
+        formData.append('job_id', currentJobId);
+        formData.append('speed', speed);
+        
+        try {
+            const res = await fetch(API_BASE_URL + '/api/change-speed', { method: 'POST', body: formData });
+            const data = await res.json();
+            
+            if(data.success) {
+                trackSpeedStatus(currentJobId);
+            } else {
+                alert(data.error || "Speed ပြောင်း၍မရပါ။");
+                loadingDiv.classList.add('hidden');
+                videoPlayer.style.opacity = "1";
+            }
+        } catch(err) {
+            alert("Connection error! ဆက်သွယ်မှု ပြတ်တောက်သွားပါသည်။");
+            loadingDiv.classList.add('hidden');
+            videoPlayer.style.opacity = "1";
+        }
+    });
+});
+
+function trackSpeedStatus(jobId) {
+    let pollSpeed = async () => {
+        try {
+            const res = await fetch(API_BASE_URL + '/api/status/' + jobId);
+            const data = await res.json();
+            
+            if(data.status === 'completed') {
+                document.getElementById('speedLoading').classList.add('hidden');
+                const videoPlayer = document.getElementById('finalVideoPlayer');
+                
+                const cacheBuster = "?t=" + new Date().getTime();
+                const newLink = API_BASE_URL + data.drive_link + cacheBuster;
+                
+                videoPlayer.src = newLink;
+                videoPlayer.style.opacity = "1";
+                videoPlayer.play().catch(e => {}); 
+                document.getElementById('downloadBtn').href = newLink;
+            } else if (data.status === 'failed') {
+                alert("Speed ပြောင်းခြင်း မအောင်မြင်ပါ။ မူရင်းသို့ ပြန်ထားလိုက်ပါ။");
+                document.getElementById('speedLoading').classList.add('hidden');
+                document.getElementById('finalVideoPlayer').style.opacity = "1";
+            } else {
+                setTimeout(pollSpeed, 2000);
+            }
+        } catch(e) {
+            setTimeout(pollSpeed, 2000);
+        }
+    };
+    setTimeout(pollSpeed, 2000);
+}
 
 chkSubtitle.addEventListener('change', (e) => {
     if(e.target.checked) {
@@ -825,12 +939,15 @@ processBtn.addEventListener('click', async () => {
         return; 
     }
 
-    const MAX_FILE_SIZE = 300 * 1024 * 1024; 
+    const MAX_FILE_SIZE = 100 * 1024 * 1024; 
     if (file.size > MAX_FILE_SIZE) {
-        document.getElementById('errorText').textContent = "ဖိုင်ဆိုဒ်ကြီးလွန်းပါသည်။ ဆာဗာ အကန့်အသတ်အရ 300 MB အောက်သာ လက်ခံပါသည်။";
+        document.getElementById('errorText').textContent = "ဖိုင်ဆိုဒ်ကြီးလွန်းပါသည်။ ဆာဗာ အကန့်အသတ်အရ 100 MB အောက်သာ လက်ခံပါသည်။";
         document.getElementById('errorSection').classList.remove('hidden');
         return;
     }
+
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.speed-btn[data-speed="1.0"]').classList.add('active');
 
     processBtn.disabled = true;
     processBtn.innerHTML = 'ဆာဗာသို့ တင်နေပါသည်...';
@@ -855,7 +972,7 @@ processBtn.addEventListener('click', async () => {
     formData.append("is_color", document.getElementById('chkColor').checked ? "true" : "false");
     formData.append("is_subtitle", document.getElementById('chkSubtitle').checked ? "true" : "false");
     formData.append("sub_color", document.getElementById('subColorSelect').value);
-    formData.append("sub_bg", document.getElementById('subBgSelect').value);
+    formData.append("sub_bg", document.getElementById('subBgSelect').value); 
     formData.append("volume_voice", document.getElementById('volVoice').value);
     formData.append("volume_bgm", document.getElementById('volBgm').value);
     formData.append("quality", document.getElementById('qualitySelect').value);
@@ -874,7 +991,7 @@ processBtn.addEventListener('click', async () => {
     const loginCode = authData ? authData.code : '';
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/upload`, { 
+        const response = await fetch(API_BASE_URL + '/api/upload', { 
             method: 'POST', headers: { 'X-Login-Code': loginCode }, body: formData 
         });
         
@@ -886,6 +1003,7 @@ processBtn.addEventListener('click', async () => {
         const data = await response.json();
         
         if (data.jobId) { 
+            currentJobId = data.jobId; 
             processBtn.innerHTML = 'လုပ်ဆောင်နေပါသည်...'; 
             trackStatus(data.jobId); 
         } else { 
@@ -906,7 +1024,7 @@ function trackStatus(jobId) {
 
     const poll = async () => {
         try {
-            const res = await fetch(`${API_BASE_URL}/api/status/${jobId}`);
+            const res = await fetch(API_BASE_URL + '/api/status/' + jobId);
             if (!res.ok) throw new Error("Server error");
             const data = await res.json();
             errorCount = 0; 
@@ -940,11 +1058,12 @@ function trackStatus(jobId) {
                     updateStep(3, 'completed'); 
                     document.querySelector('#pipelineStatusText svg').classList.add('hidden');
                     
-                    document.getElementById('finalVideoPlayer').src = `${API_BASE_URL}${data.drive_link}`;
-                    document.getElementById('downloadBtn').href = `${API_BASE_URL}${data.drive_link}`;
+                    const cacheBuster = "?t=" + new Date().getTime();
+                    document.getElementById('finalVideoPlayer').src = API_BASE_URL + data.drive_link + cacheBuster;
+                    document.getElementById('downloadBtn').href = API_BASE_URL + data.drive_link + cacheBuster;
                     
-                    if(data.audio_link) document.getElementById('downloadAudioBtn').href = `${API_BASE_URL}${data.audio_link}`;
-                    if(data.text_link) document.getElementById('downloadTextBtn').href = `${API_BASE_URL}${data.text_link}`;
+                    if(data.audio_link) document.getElementById('downloadAudioBtn').href = API_BASE_URL + data.audio_link;
+                    if(data.text_link) document.getElementById('downloadTextBtn').href = API_BASE_URL + data.text_link;
                     if(data.transcript) document.getElementById('transcriptText').value = data.transcript;
                     
                     pipelineSection.classList.add('hidden');
