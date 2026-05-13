@@ -109,7 +109,7 @@
             box-shadow: inset 0 0 15px rgba(14, 165, 233, 0.3), 0 0 10px rgba(14, 165, 233, 0.2);
         }
 
-        /* SPEED FEATURE CSS */
+        /* 🚨 SPEED FEATURE CSS 🚨 */
         .speed-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -297,7 +297,6 @@
                 <button onclick="logout()" class="glass-input hover:bg-red-500/10 hover:border-red-500/50 hover:text-red-400 text-gray-400 px-4 py-2 rounded-xl text-xs font-bold transition">ထွက်မည်</button>
             </div>
 
-            <!-- Welcome Message & User Guide (Grid) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div class="bg-gradient-to-br from-gray-800 to-black rounded-2xl p-[2px] shadow-lg border border-white/10 relative overflow-hidden h-full flex items-center justify-center">
                     <div class="p-6 text-center w-full">
@@ -350,47 +349,75 @@
                 <div class="space-y-6">
                     <div>
                         <label class="block text-xs font-bold text-gray-300 mb-2 uppercase tracking-wider">🎙️ Burmese Voice Characters</label>
+                        <!-- 🚨 GEMINI VOICES & MICROSOFT VOICES MERGED UI 🚨 -->
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="voiceContainer">
+                            
                             <button type="button" data-voice="Thiha (Male)" class="voice-btn active p-2.5 rounded-xl border border-purple-500/50 bg-purple-500/20 text-purple-300 flex flex-col items-center justify-center gap-1 transition shadow-[0_0_10px_rgba(139,92,246,0.3)]">
                                 <span class="text-2xl">👨🏻</span>
                                 <span class="text-[10px] font-bold">Thiha</span>
-                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Normal</span>
+                                <span class="text-[8px] opacity-70 bg-blue-500/30 text-blue-300 border border-blue-500/30 px-1.5 rounded">Microsoft TTS</span>
                             </button>
-                            <button type="button" data-voice="Yannaing (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white">
-                                <span class="text-2xl">🧑🏻</span>
-                                <span class="text-[10px] font-bold">Yannaing</span>
-                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Young</span>
-                            </button>
-                            <button type="button" data-voice="Kyawswar (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white">
-                                <span class="text-2xl">👨🏽</span>
-                                <span class="text-[10px] font-bold">Kyawswar</span>
-                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Mature</span>
-                            </button>
-                            <button type="button" data-voice="Sithu (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white">
-                                <span class="text-2xl">🕵🏻‍♂️</span>
-                                <span class="text-[10px] font-bold">Sithu</span>
-                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Action</span>
-                            </button>
-                            
                             <button type="button" data-voice="Nilar (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
                                 <span class="text-2xl">👩🏻</span>
                                 <span class="text-[10px] font-bold">Nilar</span>
-                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Normal</span>
+                                <span class="text-[8px] opacity-70 bg-blue-500/30 text-blue-300 border border-blue-500/30 px-1.5 rounded">Microsoft TTS</span>
                             </button>
-                            <button type="button" data-voice="Thazin (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                            
+                            <!-- Gemini Voices Start Here -->
+                            <button type="button" data-voice="Zephyr (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👩🏼</span>
+                                <span class="text-[10px] font-bold">Zephyr</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
+                            </button>
+                            <button type="button" data-voice="Puck (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👦🏻</span>
+                                <span class="text-[10px] font-bold">Puck</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
+                            </button>
+                            <button type="button" data-voice="Charon (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">🧔🏻‍♂️</span>
+                                <span class="text-[10px] font-bold">Charon</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
+                            </button>
+                            <button type="button" data-voice="Kore (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
                                 <span class="text-2xl">👧🏻</span>
-                                <span class="text-[10px] font-bold">Thazin</span>
-                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Active</span>
+                                <span class="text-[10px] font-bold">Kore</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
                             </button>
-                            <button type="button" data-voice="Lamin (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
-                                <span class="text-2xl">👩🏻‍💼</span>
-                                <span class="text-[10px] font-bold">Lamin</span>
-                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Calm</span>
+                            <button type="button" data-voice="Fenrir (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👨🏼</span>
+                                <span class="text-[10px] font-bold">Fenrir</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
                             </button>
-                            <button type="button" data-voice="Myatnoe (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
-                                <span class="text-2xl">👵🏻</span>
-                                <span class="text-[10px] font-bold">Myatnoe</span>
-                                <span class="text-[8px] opacity-70 bg-black/30 px-1.5 rounded">Mature</span>
+                            <button type="button" data-voice="Leda (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👱🏻‍♀️</span>
+                                <span class="text-[10px] font-bold">Leda</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
+                            </button>
+                            <button type="button" data-voice="Orus (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👨🏽</span>
+                                <span class="text-[10px] font-bold">Orus</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
+                            </button>
+                            <button type="button" data-voice="Aoede (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👩🏽</span>
+                                <span class="text-[10px] font-bold">Aoede</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
+                            </button>
+                            <button type="button" data-voice="Callirrhoe (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👩🏻‍🦱</span>
+                                <span class="text-[10px] font-bold">Callirrhoe</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
+                            </button>
+                            <button type="button" data-voice="Autonoe (Female)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👩🏽‍🦱</span>
+                                <span class="text-[10px] font-bold">Autonoe</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
+                            </button>
+                            <button type="button" data-voice="Enceladus (Male)" class="voice-btn p-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 flex flex-col items-center justify-center gap-1 transition hover:bg-white/10 hover:text-white mt-2 md:mt-0">
+                                <span class="text-2xl">👴🏻</span>
+                                <span class="text-[10px] font-bold">Enceladus</span>
+                                <span class="text-[8px] opacity-70 bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 px-1.5 rounded">Gemini TTS</span>
                             </button>
                         </div>
                     </div>
@@ -830,6 +857,7 @@ document.querySelectorAll('.split-btn').forEach(btn => {
     });
 });
 
+// 🚨 GEMINI VOICES BUTTON CLICK LOGIC 🚨
 document.querySelectorAll('.voice-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         document.querySelectorAll('.voice-btn').forEach(b => {
@@ -1013,7 +1041,7 @@ processBtn.addEventListener('click', async () => {
     formData.append("file", file);
     formData.append("voice", selectedVoice); 
     formData.append("ratio", selectedRatio);
-    formData.append("mode", selectedMode); // 🚨 NEW: Added Selected Mode
+    formData.append("mode", selectedMode); 
     formData.append("style", document.getElementById('styleSelect').value);
     formData.append("watermark", document.getElementById('watermarkInput').value);
     formData.append("wm_pos", document.getElementById('wmPos').value);
